@@ -1,0 +1,20 @@
+# Ignore all
+*
+
+# Unignore all dirs
+!*/
+
+!*.txt
+!*.TXT
+!*.cs
+
+# Unignore markup
+!*.ad
+!*.adoc
+!*.md
+!*.MD
+
+# Unignore .gitignore and .clang-format
+!.gitignore
+!.clang-format
+
