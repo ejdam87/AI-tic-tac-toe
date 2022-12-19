@@ -2,19 +2,38 @@
 namespace tic_tac_toe
 {
     using Position = Tuple< int, int >;
+
     abstract class Board
     {
+        protected int rows;
+        protected int cols;
         public abstract void Set( int x, int y, char sign );
         public abstract char Get( int x, int y );
         public abstract void Clear();
+
+        public override string ToString()
+        {
+            string[] str_rows = new string[ this.rows ];
+            char[] row = new char[ this.cols ];
+
+            for ( int i = 0; i < this.rows; i++ )
+            {
+                for( int j = 0; j < this.cols; j++ )
+                {
+                    row[ j ] = Get( j, i );
+                }
+                str_rows[ i ] = new String( row );
+            }
+
+            string res = String.Join(Environment.NewLine, str_rows);
+            return res + Environment.NewLine;   // NL at the end
+        }
     }
 
     class FiniteBoard : Board
     {
         // Attributes
         private char[,] board;
-        private int rows;
-        private int cols;
         // ---
 
         // Constructors
@@ -56,24 +75,6 @@ namespace tic_tac_toe
                 }
             }
         }
-
-        public override string ToString()
-        {
-            string[] str_rows = new string[ this.rows ];
-            char[] row = new char[ this.cols ];
-
-            for ( int i = 0; i < this.rows; i++ )
-            {
-                for( int j = 0; j < this.cols; j++ )
-                {
-                    row[ j ] = Get( j, i );
-                }
-                str_rows[ i ] = new String( row );
-            }
-
-            string res = String.Join(Environment.NewLine, str_rows);
-            return res + Environment.NewLine;   // NL at the end
-        }
         // ---
 
     }
@@ -81,6 +82,7 @@ namespace tic_tac_toe
     class InfiniteBoard : Board
     {
         // Attributes
+        int margin = 2;
         private Dictionary< Position, char > board;
         // ---
 
@@ -88,10 +90,16 @@ namespace tic_tac_toe
         public InfiniteBoard()
         {
             this.board = new Dictionary<Position, char>();
+            this.rows = margin + 1;
+            this.cols = margin + 1;
         }
         public InfiniteBoard( Dictionary< Position, char > d )
         {
             this.board = d;
+            foreach ( KeyValuePair< Position, char > kv in d )
+            {
+                Boundaries( kv.Key.Item1, kv.Key.Item2 );
+            }
         }
         // ---
 
@@ -110,11 +118,28 @@ namespace tic_tac_toe
         {
             Position pos = new Position( x, y );
             this.board[ pos ] = sign;
+            Boundaries( x, y );
         }
 
         public override void Clear()
         {
             this.board = new Dictionary<Position, char>();
+            this.rows = margin + 1;
+            this.cols = margin + 1;
+        }
+        // ---
+
+        // Private methods
+        private void Boundaries( int x, int y )
+        {
+            if ( x > this.cols - 1 )
+            {
+                this.cols = x + 1;
+            }
+            if ( y > this.rows - 1 )
+            {
+                this.rows = y + 1;
+            }
         }
         // ---
 
