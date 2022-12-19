@@ -11,23 +11,123 @@ namespace tic_tac_toe
         public abstract char Get( int x, int y );
         public abstract void Clear();
 
+        // Non abstract
         public override string ToString()
         {
-            string[] str_rows = new string[ this.rows ];
-            char[] row = new char[ this.cols ];
-
+            string res = HorizontalNumbering();
+            res += MarginLine();
+            for ( int i = 0; i < this.rows; i++ )
+            {
+                res += StringRow( i );
+                res += MarginLine();
+            }
+            return res;
+        }
+        public bool Solved( int count )
+        {
             for ( int i = 0; i < this.rows; i++ )
             {
                 for( int j = 0; j < this.cols; j++ )
                 {
-                    row[ j ] = Get( j, i );
+                    if ( Get( j, i ) != Globals.EMPTY && CheckSolved( j, i, count ) )
+                    {
+                        return true;
+                    }
                 }
-                str_rows[ i ] = new String( row );
             }
 
-            string res = String.Join(Environment.NewLine, str_rows);
-            return res + Environment.NewLine;   // NL at the end
+            return false;
         }
+        // ---
+
+        // Private methods
+        private string HorizontalNumbering( )
+        {
+            string res = "   ";
+            for ( int i = 0; i < this.cols; i++)
+            {
+                res += "  " + i.ToString() + " ";
+            }
+            return res + "\n";
+        }
+        private string VerticalNumbering( int i )
+        {
+            string res;
+            string num = i.ToString();
+            if ( num.Length == 1 )
+            {
+                res = " " + num + " ";
+            }
+            else if ( num.Length == 2 )
+            {
+                res = num + " ";
+            }
+            else
+            {
+                res = num;
+            }
+            return res;
+        }
+        private string MarginLine( )
+        {
+            string res = "   +";
+            for ( int i = 0; i < this.cols; i++ )
+            {
+                res += "---+";
+            }
+            return res + "\n";
+        }
+        private string StringRow( int i )
+        {
+            string res = VerticalNumbering( i );
+            res += "|";
+            for ( int j = 0; j < this.cols; j++ )
+            {
+                res += " ";
+                res += Get( j, i ).ToString();
+                res += " |";
+            }
+            return res + "\n";
+        }
+        private bool CheckSolved( int x, int y, int r)
+        {
+            Tuple< int, int >[] dirs = new Tuple< int, int >[]{ new Tuple< int, int >(+1, 0),
+                                                                new Tuple< int, int >(-1, 0),
+                                                                new Tuple< int, int >(0, +1),
+                                                                new Tuple< int, int >(0, -1),
+                                                                new Tuple< int, int >(+1, +1),
+                                                                new Tuple< int, int >(+1, -1),
+                                                                new Tuple< int, int >(-1, +1),
+                                                                new Tuple< int, int >(-1, -1) };
+    
+            foreach (Tuple< int, int > dir in dirs )
+            {
+                if ( SolvedDir( x, y, dir, r ) )
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool SolvedDir( int x, int y, Tuple< int, int > dir, int count )
+        {
+            int have = 0;
+            char sign = Get( x, y );
+
+            while ( Inbound( x, y ) && Get( x, y ) == sign )
+            {
+                have++;
+                x += dir.Item1;
+                y += dir.Item2;
+            }
+            return have >= count;
+        }
+        private bool Inbound( int x, int y )
+        {
+            return x >= 0 && x < this.cols && y >= 0 && y < this.rows;
+        }
+        // ---
+
     }
 
     class FiniteBoard : Board
@@ -82,7 +182,6 @@ namespace tic_tac_toe
     class InfiniteBoard : Board
     {
         // Attributes
-        int margin = 2;
         private Dictionary< Position, char > board;
         // ---
 
@@ -90,8 +189,8 @@ namespace tic_tac_toe
         public InfiniteBoard()
         {
             this.board = new Dictionary<Position, char>();
-            this.rows = margin + 1;
-            this.cols = margin + 1;
+            this.rows = Globals.MARGIN + 1;
+            this.cols = Globals.MARGIN + 1;
         }
         public InfiniteBoard( Dictionary< Position, char > d )
         {
@@ -124,8 +223,8 @@ namespace tic_tac_toe
         public override void Clear()
         {
             this.board = new Dictionary<Position, char>();
-            this.rows = margin + 1;
-            this.cols = margin + 1;
+            this.rows = Globals.MARGIN + 1;
+            this.cols = Globals.MARGIN + 1;
         }
         // ---
 
@@ -135,14 +234,14 @@ namespace tic_tac_toe
             if ( x > this.cols - 1 )
             {
                 this.cols = x + 1;
+                this.cols += Globals.MARGIN;
             }
             if ( y > this.rows - 1 )
             {
                 this.rows = y + 1;
+                this.rows += Globals.MARGIN;
             }
         }
         // ---
-
     }
-
 }
