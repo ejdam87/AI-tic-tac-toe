@@ -5,9 +5,13 @@ namespace tic_tac_toe
 
     abstract class Board
     {
-        protected Dictionary< Position, char > board;
-        protected int rows;
-        protected int cols;
+        protected Dictionary< Position, char > board = new Dictionary< Position, char >();
+        protected int rows = 3;
+        protected int cols = 3;
+        public Dictionary< Position, char > GetMarked()
+        {
+            return this.board;
+        }
         public virtual char Get( int x, int y )
         {
             Position pos = new Position( x, y );
@@ -17,7 +21,6 @@ namespace tic_tac_toe
             }
             return Globals.EMPTY;
         }
-
         public virtual void Set( int x, int y, char sign )
         {
             Position pos = new Position( x, y );
@@ -25,7 +28,7 @@ namespace tic_tac_toe
         }
         public virtual void Clear()
         {
-            this.board = new Dictionary<Position, char>();
+            this.board = new Dictionary< Position, char >();
         }
 
         public override string ToString()
@@ -41,14 +44,11 @@ namespace tic_tac_toe
         }
         public bool Solved( int count )
         {
-            for ( int i = 0; i < this.rows; i++ )
+            foreach ( KeyValuePair< Position, char > kv in this.board )
             {
-                for( int j = 0; j < this.cols; j++ )
+                if ( CheckSolved( kv.Key.Item1, kv.Key.Item2, count ) )
                 {
-                    if ( Get( j, i ) != Globals.EMPTY && CheckSolved( j, i, count ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 
@@ -145,10 +145,9 @@ namespace tic_tac_toe
 
     class FiniteBoard : Board
     {
-        // Constructors
+        public FiniteBoard() { }
         public FiniteBoard( int n )
         {
-            this.board = new Dictionary<Position, char>();
             this.rows = n;
             this.cols = n;
             Clear();
@@ -156,19 +155,16 @@ namespace tic_tac_toe
 
         public FiniteBoard( int m, int n )
         {
-            this.board = new Dictionary<Position, char>();
             this.rows = m;
             this.cols = n;
             Clear();
         }
-        // ---
 
-        // Public methods
         public override char Get( int x, int y )
         {
             if ( !Inbound( x, y ) )
             {
-                throw new Exception();
+                throw new OutOfBoundsException( Globals.OUT_OF_BOUNDS_ERROR );
             }
 
             return base.Get( x, y );
@@ -178,21 +174,18 @@ namespace tic_tac_toe
         {
             if ( !Inbound( x, y ) )
             {
-                throw new Exception();
+                throw new OutOfBoundsException( Globals.OUT_OF_BOUNDS_ERROR );
             }
 
             base.Set( x, y, sign );
         }
-        // ---
 
     }
 
     class InfiniteBoard : Board
     {
-
         public InfiniteBoard()
         {
-            this.board = new Dictionary<Position, char>();
             this.rows = Globals.MARGIN + 1;
             this.cols = Globals.MARGIN + 1;
         }

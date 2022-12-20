@@ -7,12 +7,67 @@ namespace tic_tac_toe
     abstract class Player
     {
         protected char sign;
-        public abstract Position Choose( Board board );
+        protected string name = "Mr. No Name";
+        public abstract Position Select( Dictionary< Position, char > marked );
+        public string GetName()
+        {
+            return this.name;
+        }
         public char GetSign()
         {
             return this.sign;
         }
 
+    }
+
+    class HumanConsole : Player
+    {
+        public HumanConsole( char sign )
+        {
+            this.sign = sign;
+        }
+        public HumanConsole( char sign, string name )
+        {
+            this.sign = sign;
+            this.name = name;
+        }
+        public override Position Select(Dictionary<Position, char> marked)
+        {
+            Console.Write("Select cell ( x y ): ");
+            string? input = Console.ReadLine();
+
+            if ( input == null )
+            {
+                throw new InputError( "Line reading failure!" );
+            }
+            return ParseLine( input );
+        }
+
+        private Position ParseLine( string line )
+        {
+            string[] coords = line.Split(' ');
+            if ( coords.Length != 2 )
+            {
+                throw new InputError( "Invalid input format!" );
+            }
+
+            int x;
+            int y;
+
+            bool success = Int32.TryParse( coords[0], out x );
+            if ( !success )
+            {
+                throw new InputError( "Invalid coord format!" );
+            }
+
+            success = Int32.TryParse( coords[1], out y );
+            if ( !success )
+            {
+                throw new InputError( "Invalid coord format!" );
+            }
+
+            return new Position( x, y );
+        }
     }
 
 }
