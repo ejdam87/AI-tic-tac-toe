@@ -5,13 +5,29 @@ namespace tic_tac_toe
 
     abstract class Board
     {
+        protected Dictionary< Position, char > board;
         protected int rows;
         protected int cols;
-        public abstract void Set( int x, int y, char sign );
-        public abstract char Get( int x, int y );
-        public abstract void Clear();
+        public virtual char Get( int x, int y )
+        {
+            Position pos = new Position( x, y );
+            if ( this.board.ContainsKey( pos ) )
+            {
+                return this.board[ pos ];
+            }
+            return Globals.EMPTY;
+        }
 
-        // Non abstract
+        public virtual void Set( int x, int y, char sign )
+        {
+            Position pos = new Position( x, y );
+            this.board[ pos ] = sign;
+        }
+        public virtual void Clear()
+        {
+            this.board = new Dictionary<Position, char>();
+        }
+
         public override string ToString()
         {
             string res = HorizontalNumbering();
@@ -38,9 +54,7 @@ namespace tic_tac_toe
 
             return false;
         }
-        // ---
 
-        // Private methods
         private string HorizontalNumbering( )
         {
             string res = "   ";
@@ -122,24 +136,19 @@ namespace tic_tac_toe
             }
             return have >= count;
         }
-        private bool Inbound( int x, int y )
+        protected bool Inbound( int x, int y )
         {
             return x >= 0 && x < this.cols && y >= 0 && y < this.rows;
         }
-        // ---
 
     }
 
     class FiniteBoard : Board
     {
-        // Attributes
-        private char[,] board;
-        // ---
-
         // Constructors
         public FiniteBoard( int n )
         {
-            this.board = new char[ n, n ];
+            this.board = new Dictionary<Position, char>();
             this.rows = n;
             this.cols = n;
             Clear();
@@ -147,7 +156,7 @@ namespace tic_tac_toe
 
         public FiniteBoard( int m, int n )
         {
-            this.board = new char[ m, n ];
+            this.board = new Dictionary<Position, char>();
             this.rows = m;
             this.cols = n;
             Clear();
@@ -157,23 +166,22 @@ namespace tic_tac_toe
         // Public methods
         public override char Get( int x, int y )
         {
-            return this.board[ y, x ];
+            if ( !Inbound( x, y ) )
+            {
+                throw new Exception();
+            }
+
+            return base.Get( x, y );
         }
 
         public override void Set( int x, int y, char sign )
         {
-            this.board[ y, x ] = sign;
-        }
-
-        public override void Clear()
-        {
-            for ( int i = 0; i < this.rows; i++ )
+            if ( !Inbound( x, y ) )
             {
-                for( int j = 0; j < this.cols; j++ )
-                {
-                    Set( j, i, Globals.EMPTY );
-                }
+                throw new Exception();
             }
+
+            base.Set( x, y, sign );
         }
         // ---
 
@@ -181,11 +189,7 @@ namespace tic_tac_toe
 
     class InfiniteBoard : Board
     {
-        // Attributes
-        private Dictionary< Position, char > board;
-        // ---
 
-        // Constructors
         public InfiniteBoard()
         {
             this.board = new Dictionary<Position, char>();
@@ -200,35 +204,20 @@ namespace tic_tac_toe
                 Boundaries( kv.Key.Item1, kv.Key.Item2 );
             }
         }
-        // ---
-
-        // Public methods
-        public override char Get( int x, int y )
-        {
-            Position pos = new Position( x, y );
-            if ( this.board.ContainsKey( pos ) )
-            {
-                return this.board[ pos ];
-            }
-            return Globals.EMPTY;
-        }
 
         public override void Set( int x, int y, char sign )
         {
-            Position pos = new Position( x, y );
-            this.board[ pos ] = sign;
+            base.Set( x, y, sign );
             Boundaries( x, y );
         }
 
         public override void Clear()
         {
-            this.board = new Dictionary<Position, char>();
+            base.Clear();
             this.rows = Globals.MARGIN + 1;
             this.cols = Globals.MARGIN + 1;
         }
-        // ---
 
-        // Private methods
         private void Boundaries( int x, int y )
         {
             if ( x > this.cols - 1 )
@@ -242,6 +231,5 @@ namespace tic_tac_toe
                 this.rows += Globals.MARGIN;
             }
         }
-        // ---
     }
 }
