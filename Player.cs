@@ -7,7 +7,7 @@ namespace tic_tac_toe
     abstract class Player
     {
         protected char sign;
-        protected string name = "Mr. No Name";
+        protected string name = Globals.DEFAULT_PLAYER_NAME;
         public abstract Position Select( Dictionary< Position, char > marked );
         public string GetName()
         {
@@ -31,7 +31,7 @@ namespace tic_tac_toe
             this.sign = sign;
             this.name = name;
         }
-        public override Position Select(Dictionary<Position, char> marked)
+        public override Position Select( Dictionary<Position, char> marked )
         {
             Console.Write("Select cell ( x y ): ");
             string? input = Console.ReadLine();
@@ -48,7 +48,7 @@ namespace tic_tac_toe
             string[] coords = line.Split(' ');
             if ( coords.Length != 2 )
             {
-                throw new InputError( "Invalid input format!" );
+                throw new InputError( Globals.INPUT_ERROR );
             }
 
             int x;
@@ -57,13 +57,13 @@ namespace tic_tac_toe
             bool success = Int32.TryParse( coords[0], out x );
             if ( !success )
             {
-                throw new InputError( "Invalid coord format!" );
+                throw new InputError( Globals.INPUT_ERROR );
             }
 
             success = Int32.TryParse( coords[1], out y );
             if ( !success )
             {
-                throw new InputError( "Invalid coord format!" );
+                throw new InputError( Globals.INPUT_ERROR );
             }
 
             return new Position( x, y );

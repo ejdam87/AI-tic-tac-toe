@@ -14,4 +14,9 @@ namespace tic_tac_toe
     {
         public InputError( string msg ) : base( msg ) { }
     }
+
+    class PlayerError : TicTacToeError
+    {
+        public PlayerError( string msg ) : base( msg ) { }
+    }
 }
