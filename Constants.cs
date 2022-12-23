@@ -3,6 +3,7 @@ namespace tic_tac_toe
 {
     static class Globals
     {
+        public const string READING_ERROR = "";
         public const string PLAYER_PICK_ERROR = "Invalid player number!";
         public const string INPUT_ERROR = "Invalid input format!";
         public const string OUT_OF_BOUNDS_ERROR = "Coords are out-of-bounds!";

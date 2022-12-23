@@ -38,7 +38,7 @@ namespace tic_tac_toe
 
             if ( input == null )
             {
-                throw new InputError( "Line reading failure!" );
+                throw new InputError( Globals.READING_ERROR );
             }
             return ParseLine( input );
         }
