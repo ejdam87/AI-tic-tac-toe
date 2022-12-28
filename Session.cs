@@ -57,7 +57,12 @@ namespace tic_tac_toe
                 throw new PlayerError( Globals.PLAYER_PICK_ERROR );
             }
         }
-        
+
+        public void SetCount( int count )
+        {
+            this.count = count;
+        }
+
         public void PlayConsole()
         {
 

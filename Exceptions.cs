@@ -19,4 +19,9 @@ namespace tic_tac_toe
     {
         public PlayerError( string msg ) : base( msg ) { }
     }
+
+    class ConsoleArgumentError : TicTacToeError
+    {
+        public ConsoleArgumentError( string msg ) : base( msg ) { }
+    }
 }
