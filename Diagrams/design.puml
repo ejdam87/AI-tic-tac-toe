@@ -1,0 +1,38 @@
+@startuml
+
+package Global
+{
+    class Constants
+    class TicTacToeException
+    class PlayerException
+    class InputException
+    class ConsoleArgumentException
+    class OutOfBoundsException
+}
+
+package Domain
+{
+    class Session
+    class Game
+    abstract class Board
+    abstract class Player
+
+    class FiniteBoard
+    class InfiniteBoard
+    class HumanConsole
+}
+
+Board <|-- FiniteBoard
+Board <|-- InfiniteBoard
+Player <|-- HumanConsole
+
+TicTacToeException <|-- InputException
+TicTacToeException <|-- OutOfBoundsException
+TicTacToeException <|-- ConsoleArgumentException
+TicTacToeException <|-- PlayerException
+
+Session -- Player
+Session -- Board
+Game -- Session
+
+@enduml
