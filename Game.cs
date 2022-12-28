@@ -55,7 +55,7 @@ namespace tic_tac_toe
 
                 else
                 {
-                    throw new ConsoleArgumentError( "Invalid argument provided! ( try -help )" );
+                    throw new ConsoleArgumentException( "Invalid argument provided! ( try -help )" );
                 }
             }
 

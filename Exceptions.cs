@@ -1,27 +1,27 @@
 
 namespace tic_tac_toe
 {
-    class TicTacToeError : Exception
+    class TicTacToeException : Exception
     {
-        public TicTacToeError( string msg ) : base( msg ) { }
+        public TicTacToeException( string msg ) : base( msg ) { }
     }
-    class OutOfBoundsException : TicTacToeError
+    class OutOfBoundsException : TicTacToeException
     {
         public OutOfBoundsException( string msg ) : base( msg ) { }
     }
 
-    class InputError : TicTacToeError
+    class InputException : TicTacToeException
     {
-        public InputError( string msg ) : base( msg ) { }
+        public InputException( string msg ) : base( msg ) { }
     }
 
-    class PlayerError : TicTacToeError
+    class PlayerException : TicTacToeException
     {
-        public PlayerError( string msg ) : base( msg ) { }
+        public PlayerException( string msg ) : base( msg ) { }
     }
 
-    class ConsoleArgumentError : TicTacToeError
+    class ConsoleArgumentException : TicTacToeException
     {
-        public ConsoleArgumentError( string msg ) : base( msg ) { }
+        public ConsoleArgumentException( string msg ) : base( msg ) { }
     }
 }

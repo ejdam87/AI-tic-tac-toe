@@ -54,7 +54,7 @@ namespace tic_tac_toe
             }
             else
             {
-                throw new PlayerError( Globals.PLAYER_PICK_ERROR );
+                throw new PlayerException( Globals.PLAYER_PICK_ERROR );
             }
         }
 

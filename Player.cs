@@ -38,7 +38,7 @@ namespace tic_tac_toe
 
             if ( input == null )
             {
-                throw new InputError( Globals.READING_ERROR );
+                throw new InputException( Globals.READING_ERROR );
             }
             return ParseLine( input );
         }
@@ -48,7 +48,7 @@ namespace tic_tac_toe
             string[] coords = line.Split(' ');
             if ( coords.Length != 2 )
             {
-                throw new InputError( Globals.INPUT_ERROR );
+                throw new InputException( Globals.INPUT_ERROR );
             }
 
             int x;
@@ -57,13 +57,13 @@ namespace tic_tac_toe
             bool success = Int32.TryParse( coords[0], out x );
             if ( !success )
             {
-                throw new InputError( Globals.INPUT_ERROR );
+                throw new InputException( Globals.INPUT_ERROR );
             }
 
             success = Int32.TryParse( coords[1], out y );
             if ( !success )
             {
-                throw new InputError( Globals.INPUT_ERROR );
+                throw new InputException( Globals.INPUT_ERROR );
             }
 
             return new Position( x, y );
