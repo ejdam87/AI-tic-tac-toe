@@ -33,14 +33,25 @@ namespace tic_tac_toe
         }
         public override Position Select( Dictionary<Position, char> marked )
         {
-            Console.Write("Select cell ( x y ): ");
-            string? input = Console.ReadLine();
 
-            if ( input == null )
+            while ( true )
             {
-                throw new InputException( Globals.READING_ERROR );
+                Console.Write("Select cell ( x y ): ");
+                string? input = Console.ReadLine();
+
+                if ( input == null )
+                {
+                    throw new InputException( Globals.READING_ERROR );
+                }
+
+                Position xy = ParseLine( input );
+                if ( !marked.ContainsKey( xy ) )
+                {
+                    return xy;
+                }
+
+                Console.WriteLine( "Position already selected!" );
             }
-            return ParseLine( input );
         }
 
         private Position ParseLine( string line )

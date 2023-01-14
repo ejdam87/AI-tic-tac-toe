@@ -77,6 +77,7 @@ namespace tic_tac_toe
                 Position xy = this.onMove.Select( this.board.GetMarked() );
                 this.board.Set( xy.Item1, xy.Item2, this.onMove.GetSign() );
                 this.onMove = GetOtherPlayer();
+
             }
 
             this.winner = GetOtherPlayer();

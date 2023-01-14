@@ -26,10 +26,10 @@ namespace tic_tac_toe
                 Console.WriteLine( Globals.CONSOLE_HELP );
             }
 
-            Player p1 = new HumanConsole( 'O' );
-            Player p2 = new HumanConsole( 'X' );
+            Player p1 = new HumanConsole( Globals.DEFAULT_PLAYER1_SING, Globals.DEFAULT_PLAYER1_NAME );
+            Player p2 = new HumanConsole( Globals.DEFAULT_PLAYER2_SING, Globals.DEFAULT_PLAYER2_NAME );
             Board board = new InfiniteBoard();
-            int count = 4;
+            int count = Globals.DEFAULT_WIN_COUNT;
 
             foreach ( string param in argv )
             {
