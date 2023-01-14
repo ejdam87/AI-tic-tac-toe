@@ -1,8 +1,10 @@
 
 namespace tic_tac_toe
 {
-    class Game
+    class ConsoleGame
     {
+
+        // TODO: Parsers
         public static Player ParsePlayer( string param )
         {
             return new HumanConsole( 'O' );

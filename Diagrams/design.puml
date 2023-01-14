@@ -13,7 +13,7 @@ package Global
 package Domain
 {
     class Session
-    class Game
+    class ConsoleGame
     abstract class Board
     abstract class Player
 
@@ -33,6 +33,6 @@ TicTacToeException <|-- PlayerException
 
 Session -- Player
 Session -- Board
-Game -- Session
+ConsoleGame -- Session
 
 @enduml
