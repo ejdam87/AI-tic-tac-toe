@@ -1,9 +1,6 @@
 # Ignore all
 *
 
-# Unignore all dirs
-!*/
-
 !*.txt
 !*.TXT
 !*.cs

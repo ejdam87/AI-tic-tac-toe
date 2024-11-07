@@ -20,6 +20,7 @@ namespace tic_tac_toe
             return -1;
         }
 
+        /*
         public static void Main( string[] argv )
         {
 
@@ -65,5 +66,6 @@ namespace tic_tac_toe
             session.PlayConsole();
 
         }
+        */
     }
 }
